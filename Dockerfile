@@ -1,7 +1,7 @@
 FROM golang:latest AS builder
 WORKDIR /app
 
-RUN  apt-get update && apt-get install git curl unzip -y && \
+RUN  apt-get update && apt-get install git jq curl unzip -y && \
      LATEST_TAG=$(curl -s https://api.github.com/repos/EasyTier/EasyTier/tags | jq -r '.[0].name') && \
      wget -O /app/easytier.zip https://github.com/EasyTier/EasyTier/releases/download/$LATEST_TAG/easytier-linux-x86_64-$LATEST_TAG.zip && \
      cd /app/ && \
