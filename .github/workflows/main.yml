@@ -5,9 +5,6 @@ on:
     - cron: '0 18 * * 0,2,4,6'
   workflow_dispatch:
   
-env:
-  EASYTIER_CORE_URL: ${{ github.event.inputs.easytier_core_url }}
-  
 jobs:
   deploy:
     runs-on: ubuntu-latest
