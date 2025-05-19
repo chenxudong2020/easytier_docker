@@ -24,7 +24,7 @@ jobs:
       - name: build_JAR_AND_Images
         id: build_JAR_AND_Images
         run : 
-          cd easytier_docker && docker build -t easytier . --no-cache
+          docker build -t easytier . --no-cache
           
       - name: Login to aliyuncs
         uses: docker/login-action@v2
