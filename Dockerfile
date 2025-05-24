@@ -1,4 +1,4 @@
-FROM debain:latest AS builder
+FROM ubuntu:22.04 AS builder
 WORKDIR /app
 
 ARG ARCH="amd64"
