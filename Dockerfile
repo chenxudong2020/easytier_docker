@@ -11,12 +11,12 @@ RUN  cd /app/easytier && \
      unzip easytier.zip && rm -rf easytier.zip
 
 
-ENV S6_OVERLAY_VERSION="3.2.0.2"
+ENV S6_OVERLAY_VERSION="3.2.1.0"
 RUN cd /tmp && \
     curl -L -o /tmp/s6-overlay-noarch.tar.xz https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz && \     
     curl -L -o /tmp/s6-overlay-x86_64.tar.xz https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz     
 
-FROM busybox:stable-glibc
+FROM busybox:stable-uclibc
 
 ENV COMMAND="" \
     PATH="/command:${PATH}" \
