@@ -10,25 +10,29 @@ RUN mkdir -p /app/easytier && wget -O /app/easytier/easytier.zip https://github.
 RUN  cd /app/easytier && \
      unzip easytier.zip && rm -rf easytier.zip
 
-FROM alpine:latest
+
+ENV S6_OVERLAY_VERSION="3.2.0.2"
+RUN cd /tmp && \
+    curl -L -o /tmp/s6-overlay-noarch.tar.xz https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz && \     
+    curl -L -o /tmp/s6-overlay-x86_64.tar.xz https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz     
+
+FROM busybox:stable-glibc
 
 ENV COMMAND="" \
     PATH="/command:${PATH}" \
     BASE_PATH="/etc/s6-overlay/s6-rc.d"
 
-
-ARG S6_OVERLAY_VERSION="3.2.0.2"
-
 COPY --chmod=755 ./rootfs /
 COPY --from=builder /app/easytier ${BASE_PATH}/easytier
+COPY --from=builder /tmp/s6-overlay-noarch.tar.xz /tmp
+COPY --from=builder /tmp/s6-overlay-x86_64.tar.xz /tmp
 
-RUN wget -O /tmp/s6-overlay-noarch.tar.xz https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz \
-    && tar -C / -Jxf /tmp/s6-overlay-noarch.tar.xz \
-    && rm -f /tmp/s6-overlay-noarch.tar.xz \
-    && wget -O /tmp/s6-overlay-x86_64.tar.xz https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz \
-    && tar -C / -Jxf /tmp/s6-overlay-x86_64.tar.xz \
-    && rm -f /tmp/s6-overlay-x86_64.tar.xz \
-    &&  rm -rf /root/*
+RUN tar -C / -Jxf /tmp/s6-overlay-noarch.tar.xz && \
+    rm -f /tmp/s6-overlay-noarch.tar.xz && \
+    tar -C / -Jxf /tmp/s6-overlay-x86_64.tar.xz && \
+    rm -f /tmp/s6-overlay-x86_64.tar.xz && \
+    ln -sf /run /var/run && \
+    rm -rf /root/*
     
 
 
