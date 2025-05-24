@@ -4,7 +4,7 @@ WORKDIR /app
 ARG ARCH="amd64"
 
 RUN apk update && apk add --no-cache git jq curl unzip wget && \
-    if [ "$ARCH" = "arm64" ]; then S6_ARCH="aarch64"; EASYTIER_ARCH ="aarch64"; else S6_ARCH="x86_64"; EASYTIER_ARCH ="x86_64"; fi && \
+    if [ "$ARCH" = "arm64" ]; then S6_ARCH="aarch64"; EASYTIER_ARCH="aarch64"; else S6_ARCH="x86_64"; EASYTIER_ARCH="x86_64"; fi && \
     LATEST_TAG=$(curl -s https://api.github.com/repos/EasyTier/EasyTier/tags | jq -r '.[0].name') && \
     wget -O /app/easytier.zip https://github.com/EasyTier/EasyTier/releases/download/${LATEST_TAG}/easytier-linux-${EASYTIER_ARCH}-${LATEST_TAG}.zip
 
