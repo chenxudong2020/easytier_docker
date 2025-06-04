@@ -23,7 +23,7 @@ ENV COMMAND="" \
     BASE_PATH="/etc/s6-overlay/s6-rc.d"
 
 COPY --chmod=755 ./rootfs /
-COPY --from=builder /app/easytier/easytier-linux-x86_64/ ${BASE_PATH}/easytier
+COPY --from=builder /app/easytier/ ${BASE_PATH}/easytier
 COPY --from=builder /tmp/s6-overlay-noarch.tar.xz /tmp
 COPY --from=builder /tmp/s6-overlay-x86_64.tar.xz /tmp
 
